@@ -11,3 +11,5 @@ CREATE TABLE product(
 	updated_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 )
 
+INSERT INTO product(name,description,price,quantity,category_id)
+VALUES ('Laptop','Laptop Description...',500,4,1) RETURNING *
