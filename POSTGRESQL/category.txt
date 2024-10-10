@@ -8,3 +8,5 @@ CREATE TABLE category(
 INSERT INTO category(name) VALUES ('ELECTRONICS')
 
 SELECT * FROM category
+
+INSERT INTO category(name) VALUES ('BOOKS') RETURNING *
