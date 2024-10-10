@@ -8,10 +8,10 @@ app.get('/', (req, res) => {
 });
 
 app.get('/categories', (req, res) => { 
-    pool.query('SELECT * FROM category',).then((result) => {
+    pool.query('SELECT * FROM categories',).then((result) => {
         return res.status(200).json(result.rows)
     }).catch((error) => {
-        return res.status(500).json(error)
+        return res.status(500).json({error: error.message})
     });
 });
 
