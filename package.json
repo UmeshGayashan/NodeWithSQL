@@ -4,7 +4,7 @@
   "description": "base server with sql",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon index.js"
   },
   "author": "UmeshGayashan",
   "license": "ISC",
