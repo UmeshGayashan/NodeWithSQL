@@ -6,6 +6,8 @@ const pool = require('./services/database');
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(express.json())  // This is a built-in middleware function in Express. It parses incoming requests with JSON payloads and is based on body-parser.
+
 app.get('/', (req, res) => { 
     res.send('Hello World');
 });
