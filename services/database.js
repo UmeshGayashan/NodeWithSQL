@@ -9,7 +9,7 @@ const pool = new Pool({
   host: 'localhost',
   database: process.env.DATABASE_NAME,
   password: process.env.DATABASE_PASSWORD,
-  port: 5432,
+  port: process.env.DATABASE_PORT,
 });
 
 // Export the pool object for use in other files
