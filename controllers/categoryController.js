@@ -15,8 +15,16 @@ const createCategoryController = async (req, res) => {
         if (!name) {
             return res.status(422).json({ error: 'Name is required' }); // 422 for missing parameters(422 Unprocessable Entity)
         }
-        const newCategory = await createCategory(name);
-        return res.status(201).json(newCategory); // 201 for successful creation
+        try {
+            const newCategory = await createCategory(name);  // Try to create the category
+            return res.status(201).json(newCategory); // 201 for successful creation
+        } catch (error) {
+            // If the error is due to the category already existing, return a 409 Conflict status
+            if (error.message === 'Category already exists') {
+                return res.status(409).json({ error: error.message }); // 409 for conflict
+            }
+            throw error; // For any other errors, throw to be handled in the outer catch block
+        }
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
@@ -25,4 +33,4 @@ const createCategoryController = async (req, res) => {
 module.exports = {
     getCategoriesController,
     createCategoryController
-}
+};

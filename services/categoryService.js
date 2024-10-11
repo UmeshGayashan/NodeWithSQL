@@ -13,6 +13,15 @@ const getCategories = async () => { // This is async because it waits for the DB
 
 const createCategory = async (name) => {
     try {
+        const existsResult = await pool.query({
+            text: `SELECT EXISTS (SELECT * FROM category WHERE name = $1)`,
+            values: [name]
+        });
+
+        if (existsResult.rows[0].exists) {
+            throw new Error('Category already exists');
+        }
+
         const result = await pool.query({
             text: 'INSERT INTO category(name) VALUES($1) RETURNING *',
             values: [name]
