@@ -10,14 +10,9 @@ app.get('/', (req, res) => {
     res.send('Hello World');
 });
 
-app.get('/categories', async(req, res) => { 
-    try {
-        const result = await pool.query('SELECT * FROM category');
-        return res.status(200).json(result.rows); // Use result.rows to get the actual data
-    } catch (error) {
-        return res.status(500).json({ error: error.message }); // Return a more specific error message
-    }
-});
+const categoryRoutes = require('./routes/categoryRoutes');
+
+app.use('/', categoryRoutes);
 
 app.get('/products', async(req, res) => { 
     try {
