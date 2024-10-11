@@ -15,6 +15,7 @@ app.get('/', (req, res) => {
 const categoryRoutes = require('./routes/categoryRoutes');
 
 app.use('/', categoryRoutes);
+app.use('/', require('./routes/productRoutes'));
 
 app.get('/products', async(req, res) => { 
     try {
