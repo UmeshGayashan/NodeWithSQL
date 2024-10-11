@@ -1,11 +1,11 @@
 const { text } = require('express');
 const pool = require('./database');
-const { categoryExists,createCategoryInDB } = require('../repositories/categoryRepository');
+const { categoryExists,createCategoryInDB,getCategoriesInDB } = require('../repositories/categoryRepository');
 
 const getCategories = async () => { // This is async because it waits for the DB query
     try {
-        const result = await pool.query('SELECT * FROM category'); // Await the DB query
-        return result.rows;
+        const categories = await getCategoriesInDB(); // Await the DB query
+        return categories;
     } catch (error) {
         throw error;
     }

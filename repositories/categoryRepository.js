@@ -9,6 +9,7 @@ const categoryExists = async (name) => {
     return existsResult.rows[0].exists;
 };
 
+// To create a category in the database
 const createCategoryInDB = async (name) => {
     const result = await pool.query({
         text: 'INSERT INTO category(name) VALUES($1) RETURNING *',
@@ -17,7 +18,14 @@ const createCategoryInDB = async (name) => {
     return result.rows[0];
 };
 
+// To get all categories from the database
+const getCategoriesInDB = async () => {
+    const result = await pool.query('SELECT * FROM category'); // Await the DB query
+    return result.rows;
+};
+
 module.exports = {
     categoryExists,
-    createCategoryInDB
+    createCategoryInDB,
+    getCategoriesInDB
 };
