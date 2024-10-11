@@ -1,6 +1,6 @@
 const { text } = require('express');
 const pool = require('./database');
-const { categoryExists } = require('../repositories/categoryRepository');
+const { categoryExists,createCategoryInDB } = require('../repositories/categoryRepository');
 
 const getCategories = async () => { // This is async because it waits for the DB query
     try {
@@ -20,11 +20,9 @@ const createCategory = async (name) => {
             throw new Error('Category already exists');
         }
 
-        const result = await pool.query({
-            text: 'INSERT INTO category(name) VALUES($1) RETURNING *',
-            values: [name]
-    });
-        return result.rows[0]; // Return the newly created category
+        const newCategory = await createCategoryInDB(name); // Create the category
+        return newCategory;
+        
     } catch (error) {
         throw error;
     }
