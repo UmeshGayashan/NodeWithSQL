@@ -1,5 +1,6 @@
 const { text } = require('express');
 const pool = require('./database');
+const { categoryExists } = require('../repositories/categoryRepository');
 
 const getCategories = async () => { // This is async because it waits for the DB query
     try {
@@ -13,12 +14,9 @@ const getCategories = async () => { // This is async because it waits for the DB
 
 const createCategory = async (name) => {
     try {
-        const existsResult = await pool.query({
-            text: `SELECT EXISTS (SELECT * FROM category WHERE name = $1)`,
-            values: [name]
-        });
+        const exists = await categoryExists(name); // Check if the category already exists
 
-        if (existsResult.rows[0].exists) {
+        if (exists) {
             throw new Error('Category already exists');
         }
 
