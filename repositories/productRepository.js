@@ -16,6 +16,15 @@ const createProductInDB = async (name, decription, price, currency, quantity, ac
     return result.rows[0];
 };
 
+const categoryExistsById = async (id) => {
+    const existsResult = await pool.query({
+        text: `SELECT EXISTS (SELECT * FROM category WHERE id = $1)`,
+        values: [id]
+    });
+    return existsResult.rows[0].exists;
+};
+
 module.exports = {
-    createProductInDB
+    createProductInDB,
+    categoryExistsById
 };
