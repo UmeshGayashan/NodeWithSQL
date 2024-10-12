@@ -1,4 +1,5 @@
 const {getCategories,createCategory,updateCategory} = require('../services/categoryService');
+const {categoryExistsById} = require('../repositories/productRepository');
 
 const getCategoriesController = async (req, res) => { // This is async because it waits for the service to return the data
     try {
@@ -33,11 +34,15 @@ const createCategoryController = async (req, res) => {
 const updateCategoryController = async (req, res) => {
     const { id } = req.params;
     const { name } = req.body;
+    const checkCategoryById = await categoryExistsById(id); // Check if the category exists
     try {
         if (!name) {
             return res.status(422).json({ error: 'Name is required' }); // 422 for missing parameters(422 Unprocessable Entity)
         }
-        try {
+        if (!checkCategoryById) {
+            return res.status(422).json({ error: 'Category does not exist' }); // 422 for missing parameters(422 Unprocessable Entity)
+        }
+        try {            
             const updatedCategory = await updateCategory(id, name);  // Try to update the category
             return res.status(200).json(updatedCategory); // 200 for successful update
         } catch (error) {
