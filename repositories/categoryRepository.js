@@ -24,8 +24,18 @@ const getCategoriesInDB = async () => {
     return result.rows;
 };
 
+// Update the category
+const updateCategoryInDB = async (id, name) => {
+    const result = await pool.query({
+        text: `UPDATE category SET name = $1 , updated_date = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *`,
+        values: [name, id]
+    });
+    return result.rows[0];
+};
+
 module.exports = {
     categoryExists,
     createCategoryInDB,
-    getCategoriesInDB
+    getCategoriesInDB,
+    updateCategoryInDB
 };
