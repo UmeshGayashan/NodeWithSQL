@@ -1,4 +1,4 @@
-const { createProductInDB } = require('../repositories/productRepository');
+const { createProductInDB,updateProductInDBById } = require('../repositories/productRepository');
 
 const createProduct = async (name, description, price, currency, quantity, active, category_id) => {
     try {
@@ -9,6 +9,16 @@ const createProduct = async (name, description, price, currency, quantity, activ
     }
 };
 
+const updateProduct = async (id, name, description, price, currency, quantity, active, category_id) => {
+    try {
+        const updatedProduct = await updateProductInDBById(id, name, description, price, currency, quantity, active, category_id);
+        return updatedProduct;
+    } catch (error) {
+        throw error;
+    }
+};
+
 module.exports = {
-    createProduct
+    createProduct,
+    updateProduct
 };
