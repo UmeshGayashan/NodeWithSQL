@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const { createProductController, updateProductController } = require('../controllers/productController')
+const { createProductController, updateProductController, searchProductController } = require('../controllers/productController')
 
-router.post('/products', createProductController);
-router.put('/products/:id', updateProductController);
+router.post('/', createProductController);
+router.put('/:id', updateProductController);
+
+// Define the route for searching products
+router.get('/search', searchProductController);
 
 module.exports = router;
