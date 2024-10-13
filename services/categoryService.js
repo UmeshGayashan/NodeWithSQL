@@ -1,7 +1,7 @@
 const { text } = require('express');
 const pool = require('./database');
 const { categoryExists,createCategoryInDB,getCategoriesInDB,updateCategoryInDB,deleteCategoryInDB ,countProductsInCategory} = require('../repositories/categoryRepository');
-const { categoryExistsById } = require('../repositories/categoryRepository');
+const { categoryExistsById } = require('../repositories/productRepository');
 
 const getCategories = async () => { // This is async because it waits for the DB query
     try {
