@@ -33,9 +33,19 @@ const updateCategoryInDB = async (id, name) => {
     return result.rows[0];
 };
 
+// Delete the category
+const deleteCategoryInDB = async (id) => {
+    const result = await pool.query({
+        text: `DELETE FROM category WHERE id = $1 RETURNING *`,
+        values: [id]
+    });
+    return result.rows[0];
+};
+
 module.exports = {
     categoryExists,
     createCategoryInDB,
     getCategoriesInDB,
-    updateCategoryInDB
+    updateCategoryInDB,
+    deleteCategoryInDB
 };

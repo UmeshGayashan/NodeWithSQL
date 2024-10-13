@@ -1,6 +1,6 @@
 const { text } = require('express');
 const pool = require('./database');
-const { categoryExists,createCategoryInDB,getCategoriesInDB,updateCategoryInDB } = require('../repositories/categoryRepository');
+const { categoryExists,createCategoryInDB,getCategoriesInDB,updateCategoryInDB,deleteCategoryInDB } = require('../repositories/categoryRepository');
 
 const getCategories = async () => { // This is async because it waits for the DB query
     try {
@@ -44,8 +44,19 @@ const updateCategory = async (id, name) => {
     }
 }
 
+const deleteCategory = async (id) => {
+    try {
+        const deletedCategory = await deleteCategoryInDB(id); // Delete the category
+        return deletedCategory;
+        
+    } catch (error) {
+        throw error;
+    }
+}
+
 module.exports = {
     getCategories,
     createCategory,
-    updateCategory
+    updateCategory,
+    deleteCategory
 };
