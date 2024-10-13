@@ -47,9 +47,29 @@ const categoryExistsById = async (id) => {
     return existsResult.rows[0].exists;
 };
 
+// Search for a product by exact Name
+const searchProductByExactName = async (name) => {
+    const result = await pool.query({
+        text: `SELECT * FROM product WHERE name = $1`,
+        values: [name]
+    });
+    return result.rows;
+};
+
+// Search for a product by partial Name
+const searchProductByPartialName = async (name) => {
+    const result = await pool.query({
+        text: `SELECT * FROM product WHERE name LIKE $1`,
+        values: [`%${name}%`]
+    });
+    return result.rows;
+};
+
 module.exports = {
     createProductInDB,
     categoryExistsById,
     updateProductInDBById,
-    prodcutExistsById
+    prodcutExistsById,
+    searchProductByExactName,
+    searchProductByPartialName
 };
