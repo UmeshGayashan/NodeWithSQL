@@ -1,4 +1,4 @@
-const { createProductInDB,updateProductInDBById } = require('../repositories/productRepository');
+const { createProductInDB, updateProductInDBById, searchProductByExactName, searchProductByPartialName } = require('../repositories/productRepository');
 
 const createProduct = async (name, description, price, currency, quantity, active, category_id) => {
     try {
@@ -18,7 +18,16 @@ const updateProduct = async (id, name, description, price, currency, quantity, a
     }
 };
 
+const searchProductByNameCaseSensitive = async (name, isExact = false) => {
+    if(isExact){
+        return await searchProductByExactName(name);
+    }else{
+        return await searchProductByPartialName(name);
+    }
+};
+
 module.exports = {
     createProduct,
-    updateProduct
+    updateProduct,
+    searchProductByNameCaseSensitive
 };
