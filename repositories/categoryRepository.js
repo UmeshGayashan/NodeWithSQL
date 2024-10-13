@@ -42,10 +42,20 @@ const deleteCategoryInDB = async (id) => {
     return result.rows[0];
 };
 
+// Check the count of products in a category
+const countProductsInCategory = async (id) => {
+    const result = await pool.query({
+        text: `SELECT COUNT(*) FROM product WHERE category_id = $1`,
+        values: [id]
+    });
+    return result.rows[0].count;
+};
+
 module.exports = {
     categoryExists,
     createCategoryInDB,
     getCategoriesInDB,
     updateCategoryInDB,
-    deleteCategoryInDB
+    deleteCategoryInDB,
+    countProductsInCategory
 };

@@ -1,5 +1,6 @@
 const {getCategories,createCategory,updateCategory,deleteCategory} = require('../services/categoryService');
 const {categoryExistsById} = require('../repositories/productRepository');
+const {countProductsInCategory} = require('../repositories/categoryRepository');
 
 const getCategoriesController = async (req, res) => { // This is async because it waits for the service to return the data
     try {
@@ -59,18 +60,16 @@ const updateCategoryController = async (req, res) => {
 
 const deleteCategoryController = async (req, res) => {
     const { id } = req.params;
-    const checkCategoryById = await categoryExistsById(id); // Check if the category exists
     try {
-        if (!checkCategoryById) {
-            return res.status(422).json({ error: 'Category does not exist' }); // 422 for missing parameters(422 Unprocessable Entity)
-        }
-        try {            
-            const deletedCategory = await deleteCategory(id);  // Try to delete the category
+        const deletedCategory = await deleteCategory(id);  // Try to delete the category
             return res.status(200).json(deletedCategory); // 200 for successful deletion
-        } catch (error) {
-            throw error; // For any other errors, throw to be handled in the outer catch block
-        }
     } catch (error) {
+        if (error.message.includes('being used')) {
+            return res.status(409).json({ error: error.message });
+        }
+        if (error.message.includes('does not exist')) {
+            return res.status(422).json({ error: error.message });
+        }
         return res.status(500).json({ error: error.message });
     }
 }

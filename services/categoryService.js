@@ -1,6 +1,7 @@
 const { text } = require('express');
 const pool = require('./database');
-const { categoryExists,createCategoryInDB,getCategoriesInDB,updateCategoryInDB,deleteCategoryInDB } = require('../repositories/categoryRepository');
+const { categoryExists,createCategoryInDB,getCategoriesInDB,updateCategoryInDB,deleteCategoryInDB ,countProductsInCategory} = require('../repositories/categoryRepository');
+const { categoryExistsById } = require('../repositories/categoryRepository');
 
 const getCategories = async () => { // This is async because it waits for the DB query
     try {
@@ -45,7 +46,15 @@ const updateCategory = async (id, name) => {
 }
 
 const deleteCategory = async (id) => {
+    const productCount = await countProductsInCategory(id); // Check
+    const checkCategoryById = await categoryExistsById(id); // Check if the category exists
     try {
+        if (!checkCategoryById) {
+            throw new Error('Category does not exist');
+        }
+        if (productCount > 0) {
+            throw new Error( `Category is being used in ${productCount} product(s)`);
+        }
         const deletedCategory = await deleteCategoryInDB(id); // Delete the category
         return deletedCategory;
         
