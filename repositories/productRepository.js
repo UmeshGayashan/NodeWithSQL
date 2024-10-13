@@ -59,7 +59,7 @@ const searchProductByExactName = async (name) => {
 // Search for a product by partial Name
 const searchProductByPartialName = async (name) => {
     const result = await pool.query({
-        text: `SELECT * FROM product WHERE name LIKE $1`,
+        text: `SELECT * FROM product WHERE name ILIKE $1`,
         values: [`%${name}%`]
     });
     return result.rows;
